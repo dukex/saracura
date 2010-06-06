@@ -5,8 +5,12 @@
 	<link rel="stylesheet" href="css/text.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="css/960.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="css/typogridphy.css" type="text/css" media="screen" title="no title" charset="utf-8">
-	
 	<style type="text/css">
+		@font-face {
+			font-family: 'Harabara';
+			src: local('Harabara'),
+			url('type/Harabara.ttf') format('truetype');
+		}
 		body{
 			border:none;
 			background:#F7F7F7;
@@ -16,17 +20,18 @@
 		}
 		#header h1{
 			color:#04819E;
-			font: normal normal normal 100px/100px "Lucida Grande",sans-serif;
-			text-shadow: #333 1px 1px 2px;
+			font: normal normal normal 100px/100px "Harabara","Lucida Grande",sans-serif;
+			text-shadow: #333 1px 1px 2px, #FFF -1px -1px 2px;
 			margin:0;
 		}
-		body div#nav ul{
-			list-type:none;
+		#nav  ul{
+			list-style:none;
+			border:1px solid red
 		}
 	</style>
 	<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
 	<script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-	<script src="map.js"></script>
+	<script src="js/map.js"></script>
 </head>
 <body onload="init();">
 	<div class="container_12">
