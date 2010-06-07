@@ -2,7 +2,7 @@ var lat=-23.564617;
 var lon=-46.62735;
 var zoom=12;
 
-var map; 
+var map, markes; 
 
 function init() {
 	
@@ -24,7 +24,7 @@ function init() {
 	map.addLayer(layerMapnik);
 
 
-	centro = new OpenLayers.Layer.Markers("Markers");
+	markes = new OpenLayers.Layer.Markers("Markers");
 	var locais = new Array();
 	locais[0] = new Array();
 	locais[1] = new Array();
@@ -41,10 +41,9 @@ function init() {
 	 locais[3]['lon'] = -46.62245;
 	
 	for(i=0;i<locais.length;i++){
-		locais[i].id = i;
-		setMarker(locais[i]['lat'], locais[i]['lon'], centro);
+		setMarker(locais[i]['lat'], locais[i]['lon'], i, markes, map);
 	}
-	map.addLayer(centro);
+	map.addLayer(markes);
 
 	var ancorasaopaulo = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
 
@@ -54,14 +53,14 @@ function init() {
 	map.setCenter (ancorasaopaulo, zoom);
 	
 }
-function setMarker(lon, lat, layer){
+function setMarker(lat, lon, id,  markes, map){
 	var size = new OpenLayers.Size(21,25);
     var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
-	var feature = new OpenLayers.Feature(layer, lonLat);
+	var feature = new OpenLayers.Feature(markes, lonLat);
     var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
 	feature.closeBox = true;
-    feature.popupClass = OpenLayers.Class(OpenLayers.Popup.AnchoredBubble, {minSize: new OpenLayers.Size(300, 180) } );
-    feature.data.popupContentHTML = 'Hello World';
+    feature.popupClass = OpenLayers.Class(OpenLayers.Popup.AnchoredBubble, { setSize: new OpenLayers.Size(21,25) } );
+    feature.data.popupContentHTML = '<form action="register"><input name="point" id="point" value="'+i+'" type="hidden" /><label for="tel">Receber alertas desse ponto</label><input name="tel" id="tel" type="text" /><br /><button type="submit">Cadastrar</button></form>';
     feature.data.overflow = "hidden";
 
     //var marker = new OpenLayers.Marker(lonLatMarker, icon);
@@ -82,7 +81,7 @@ function setMarker(lon, lat, layer){
     };
     marker.events.register("mousedown", feature, markerClick);
 
-    layer.addMarker(marker);
+    markes.addMarker(marker);
 }
 
 function addMarkers (lat,lon, layer) {
