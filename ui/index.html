@@ -24,7 +24,14 @@
 			text-shadow: #333 1px 1px 2px, #FFF -1px -1px 2px;
 			margin:0;
 		}
+		#info{
+			margin:5px 0;
+		}
+		#info p{
+			font: normal normal normal 11px/14px "Lucida Grande",sans-serif;
+		}
 		#nav  ul{
+			margin: 20px 0 0;
 			list-style:none;
 			border:1px solid red
 		}
@@ -38,19 +45,25 @@
 		<div id="header" class="grid_7">
 			<h1>Saracura</h1>
 		</div>
+		<div id="info">
+			<p>Saracura &eacute; um sistema criado para ajudar os cidad&atilde;os, indicando &aacute;reas de risco na cidade de S&atilde;o Paulo.</p>
+			<p>No Saracura qualquer cidad&atilde;o pode Informar novos <a href="" class="url">Pontos de Alagamento</a> ou <a href="" class="url">Pontos de Deslizamento</a>.</p>
+			<p>Para receber alertas via SMS sobre uma determinada &aacute;rea de risco, basta clicar no &iacute;cone do local e cadastrar seu celular </p>
+			
+		</div>
+		<br class="clear" />
+		<div class="grid_12" id="map"></div>
 		<div id="nav" class="grid_5">
 			<ul>
 			    <li>
-			        <a href="" class="url">Informar Ponto de Alagamento</a>
+			        
 			    </li>
 			    <li>
-			       <a href="" class="url">Informar Ponto de Deslizamento</a>
+			       
 			    </li>
 			</ul>
 		
-		</div>
-		<br class="clear" />
-		<div class="grid_12" id="map"></div>	
+		</div>	
 	</div>
 </body>
 </html>

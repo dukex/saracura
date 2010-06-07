@@ -1,4 +1,3 @@
-
 var lat=-23.564617;
 var lon=-46.62735;
 var zoom=12;
@@ -43,7 +42,7 @@ function init() {
 	
 	for(i=0;i<locais.length;i++){
 		locais[i].id = i;
-		addMarkers (locais[i]['lat'], locais[i]['lon'], centro);
+		setMarker(locais[i]['lat'], locais[i]['lon'], centro);
 	}
 	map.addLayer(centro);
 
@@ -55,52 +54,52 @@ function init() {
 	map.setCenter (ancorasaopaulo, zoom);
 	
 }
-
-function addMarkers (lat,lon, layer) {
+function setMarker(lon, lat, layer){
 	var size = new OpenLayers.Size(21,25);
-	var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+    var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+	var feature = new OpenLayers.Feature(layer, lonLat);
+    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+	feature.closeBox = true;
+    feature.popupClass = OpenLayers.Class(OpenLayers.Popup.AnchoredBubble, {minSize: new OpenLayers.Size(300, 180) } );
+    feature.data.popupContentHTML = 'Hello World';
+    feature.data.overflow = "hidden";
+
+    //var marker = new OpenLayers.Marker(lonLatMarker, icon);
 	var icon = new OpenLayers.Icon('http://www.openstreetmap.org/openlayers/img/marker.png',size,offset);
-	var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
 	var marker = new OpenLayers.Marker(lonLat,icon);
-	layer.addMarker(marker);
-		marker.events.register("mousedown", marker, function(){
-		var ancorasaopaulo = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+	
+    marker.feature = feature;
 
-		popup = new OpenLayers.Popup("popup",
-			    ancorasaopaulo,
-			    null,
-			    "<form id=\"seguir\"><input type=\"hidden\" id=\"id\" value=\""+this.id+"\" /><label>Numero do Celular:</label><input type=\"text\" id=\"name\" /><button type=\"submit\">Seguir</button></form>",
-			     true);
-		map.addPopup(popup);
-		
-	});
+    var markerClick = function(evt) {
+        if (this.popup == null) {
+            this.popup = this.createPopup(this.closeBox);
+            map.addPopup(this.popup);
+            this.popup.show();
+        } else {
+            this.popup.toggle();
+        }
+        OpenLayers.Event.stop(evt);
+    };
+    marker.events.register("mousedown", feature, markerClick);
 
+    layer.addMarker(marker);
 }
 
-function mousedown(evt) {
+function addMarkers (lat,lon, layer) {
 	
-			alert(evt.relatedTarget);
 	
-		
-	             // check to see if the popup was hidden by the close box
-	             // if so, then destroy it before continuing
-	            if (popup != null) {
-	                if (!popup.visible()) {
-	                    marker.map.removePopup(popup);
-	                    popup.destroy();
-	                    popup = null;
-	                }
-	            }
-	            if (popup == null) {
-	                popup = feature.createPopup(true);
-	                popup.setContentHTML("<a href='http://www.somethingconstructive.net' target='_blank'>click me</a>");
-	                popup.setBackgroundColor("yellow");
-	                popup.setOpacity(0.7);
-	                marker.map.addPopup(popup);
-	            } else {
-	                marker.map.removePopup(popup);
-	                popup.destroy();
-	                popup = null;
-	            }
-	            OpenLayers.Event.stop(evt);
-	        }
+		layer.addMarker(marker);
+	
+	var popupId = "popup";
+	var popup = new OpenLayers.Popup.AnchoredBubble(popupId, lonLat,
+	                                 new OpenLayers.Size(200,20),
+	                                 "Hello World ... "+popupId,
+	                                 null, true,closePopUp);
+	//popup.closeOnMove = true;
+	layer.addPopup(popup);
+	popup.hide();
+	layer.events.register('click', lonLat, function(){popup.show();});
+}
+function closePopUp(){
+    this.hide();
+}
